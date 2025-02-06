@@ -1,0 +1,8 @@
+{
+  "General": {
+    "LogLevel": 0
+  },
+  "CameraCapture": {
+    "deviceID": 1
+  }
+}
