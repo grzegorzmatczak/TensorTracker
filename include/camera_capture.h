@@ -6,31 +6,31 @@
 
 namespace logger
 {
-	class Logger;
+    class Logger;
 }
 
 class CameraCapture : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	CameraCapture(const QJsonObject& config);
-	~CameraCapture();
-	void configure(const QJsonObject& config);
+    CameraCapture(const QJsonObject& config);
+    ~CameraCapture();
+    void configure(const QJsonObject& config);
 private:
 
 public slots:
-	void onUpdate();
+    void onUpdate();
 private slots:
-	void startCamera();
-	void stopCamera();
-	void displayCameraError();
+    void startCamera();
+    void stopCamera();
+    void displayCameraError();
 signals:
-	void updateFrame(cv::Mat frame);
+    void updateFrame(cv::Mat frame);
 private:
-	int mDeviceID{ 0 };
-	logger::Logger* mLogger;
-	cv::Mat mFrame;
-	cv::VideoCapture mCap;
+    int mDeviceID{ 0 };
+    logger::Logger* mLogger;
+    cv::Mat mFrame;
+    cv::VideoCapture mCap;
 
 };

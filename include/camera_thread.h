@@ -6,23 +6,23 @@
 
 namespace logger
 {
-	class Logger;
+    class Logger;
 }
 
 class CameraThread : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	CameraThread(const QJsonObject& config);
-	~CameraThread();
-	void configure(const QJsonObject& config);
+    CameraThread(const QJsonObject& config);
+    ~CameraThread();
+    void configure(const QJsonObject& config);
 
 public slots:
-	void onUpdate();
-	void onUpdateFrame(cv::Mat frame);
+    void onUpdate();
+    void onUpdateFrame(cv::Mat frame);
 private:
-	qint64 timestamp{};
-	logger::Logger* mLogger;
+    qint64 timestamp{};
+    logger::Logger* mLogger;
 
 };

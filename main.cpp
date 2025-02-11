@@ -9,12 +9,12 @@
 
 int main(int argc, char* argv[])
 {
-	QCoreApplication app(argc, argv);
-	MainLogger::start();
+    QCoreApplication app(argc, argv);
+    MainLogger::start();
 
-	ConfigReader configReader;
-	QJsonObject config;
-	configReader.readConfig(QString::fromStdString(CONFIG), config);
-	Service service{ config };
-	return app.exec();
+    ConfigReader configReader;
+    QJsonObject config;
+    configReader.readConfig(QString::fromStdString(CONFIG), config);
+    Service service{ config };
+    return app.exec();
 }
