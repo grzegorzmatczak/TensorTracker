@@ -1,8 +1,11 @@
 {
   "General": {
-    "LogLevel": 0
+    "LogLevel" : 0
   },
-  "CameraCapture": {
+  "Service": {
+    "CameraFPS" : 25
+  },
+  "CameraCapture" : {
     "deviceID": 1
   }
 }

@@ -2,7 +2,7 @@
 project(TensorTracker VERSION 0.0.1 DESCRIPTION "TensorTracker" LANGUAGES C CXX)
 
 set(TARGET_NAME "TensorTracker")
-set(CMAKE_BUILD_TYPE "Release")
+set(CMAKE_BUILD_TYPE "Debug")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -41,7 +41,7 @@ MESSAGE(STATUS "Include dirs ${OpenCV_INCLUDE_DIRS}")
 MESSAGE(STATUS "LINK LIBRARIES ${OpenCV_LIBS}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-set(SRC_MAIN main.cpp "src/service.cpp" "include/service.h" "src/camera_capture.cpp" "include/camera_capture.h" "global.h")
+set(SRC_MAIN main.cpp "src/service.cpp" "include/service.h" "src/camera_capture.cpp" "include/camera_capture.h" "global.h" "src/camera_thread.cpp" "include/camera_thread.h")
 set(HEADERS_MAIN)
 
 
@@ -58,8 +58,8 @@ if (WIN32)
 endif(WIN32)
 
 if (WIN32)
-	set(PREFIX_BUILD_TYPE "")
-	set(OPENCV_PREFIX_BUILD_TYPE "")
+	set(PREFIX_BUILD_TYPE "d")
+	set(OPENCV_PREFIX_BUILD_TYPE "d")
 	message("Copy OpenCV file:" )
 	
 	set(OPENCV_VERSION_WINDOWS "4100")
@@ -75,7 +75,7 @@ if (WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_PATH}/bin/Qt5Gui${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_PATH}/bin/Qt5Multimedia${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_PATH}/bin/Qt5Network${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}
-		COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_CORE} ${CMAKE_BINARY_DIR}
+		COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_CORE} ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}
 
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_stitching${OPENCV_VERSION_WINDOWS}${OPENCV_PREFIX_BUILD_TYPE}.dll   ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_bgsegm${OPENCV_VERSION_WINDOWS}${OPENCV_PREFIX_BUILD_TYPE}.dll   ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/

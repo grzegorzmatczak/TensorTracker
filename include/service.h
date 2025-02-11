@@ -1,9 +1,14 @@
 #pragma once
 
 #include "camera_capture.h"
+#include "camera_thread.h"
 
 #include <QObject>
-#include <QThread>
+
+namespace logger
+{
+	class Logger;
+}
 
 class Service : public QObject
 {
@@ -11,13 +16,25 @@ class Service : public QObject
 
 public:
 	Service();
-	Service(QJsonObject const& config);
+	Service(const QJsonObject& config);
 	~Service();
-	void configure(QJsonObject const& config);
-
+	void configure(const QJsonObject& config);
+private slots:
+	void onUpdate();
 private:
-	void createStartupThreads(QJsonObject const& config);
-
+	void createStartupThreads(const QJsonObject& config);
+private:
 	CameraCapture* capture{ nullptr };
 	QThread* captureThread{ nullptr };
+	CameraThread* camera{ nullptr };
+	QThread* cameraThread{ nullptr };
+
+	QTimer* mTimer{ nullptr };
+	QTimer* mTimerCamera{ nullptr };
+
+	logger::Logger* mLogger;
+
+	int mCameraTimerValue{ 100 };
+	int mCameraFPS{ 25 };
+
 };
