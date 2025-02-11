@@ -15,7 +15,7 @@ CameraThread::~CameraThread()
 
 void CameraThread::configure(const QJsonObject& config)
 {
-    mLogger = new logger::Logger(logger::LogType::CAMERA_CAPTURE, logger::LogLevel::MEDIUM, logger::LogFunction::YES);
+    mLogger = std::make_unique<logger::Logger>(logger::LogType::CAMERA_THREAD, logger::LogLevel::MEDIUM, logger::LogFunction::YES);
     timestamp = QDateTime::currentMSecsSinceEpoch();
 }
 

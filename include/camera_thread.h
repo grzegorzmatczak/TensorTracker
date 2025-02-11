@@ -23,6 +23,6 @@ public slots:
     void onUpdateFrame(cv::Mat frame);
 private:
     qint64 timestamp{};
-    logger::Logger* mLogger;
+    std::unique_ptr<logger::Logger> mLogger;
 
 };

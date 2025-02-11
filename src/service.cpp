@@ -29,7 +29,7 @@ Service::~Service()
 
 void Service::configure(const QJsonObject& config)
 {
-    mLogger = new logger::Logger(logger::LogType::SERVICE, logger::LogLevel::HIGH, logger::LogFunction::YES);
+    mLogger = std::make_unique<logger::Logger>(logger::LogType::SERVICE, logger::LogLevel::MEDIUM, logger::LogFunction::YES);
     mLogger->showThreadId(true);
     mTimer = new QTimer(this);
     mTimerCamera = new QTimer(this);

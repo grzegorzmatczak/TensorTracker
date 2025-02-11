@@ -29,7 +29,7 @@ signals:
     void updateFrame(cv::Mat frame);
 private:
     int mDeviceID{ 0 };
-    logger::Logger* mLogger;
+    std::unique_ptr<logger::Logger> mLogger;
     cv::Mat mFrame;
     cv::VideoCapture mCap;
 

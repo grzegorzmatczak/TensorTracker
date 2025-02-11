@@ -32,7 +32,7 @@ private:
     QTimer* mTimer{ nullptr };
     QTimer* mTimerCamera{ nullptr };
 
-    logger::Logger* mLogger;
+    std::unique_ptr<logger::Logger> mLogger;
 
     int mCameraTimerValue{ 100 };
     int mCameraFPS{ 25 };

@@ -21,7 +21,7 @@ CameraCapture::~CameraCapture()
 
 void CameraCapture::configure(const QJsonObject& config)
 {
-    mLogger = new logger::Logger(logger::LogType::CAMERA_CAPTURE, logger::LogLevel::MEDIUM, logger::LogFunction::YES);
+    mLogger = std::make_unique<logger::Logger>(logger::LogType::CAMERA_CAPTURE, logger::LogLevel::MEDIUM, logger::LogFunction::YES);
     mLogger->showThreadId(true);
 
     mDeviceID = config[DEVICE_ID].toInt();
