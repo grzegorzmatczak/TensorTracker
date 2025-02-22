@@ -12,12 +12,16 @@
 #include <stdio.h>
 
 CameraCapture::CameraCapture(const QJsonObject& config)
+    : FrameSource(config)
 {
+    mLogger->printStartFunction(__FUNCTION__, logger::LogLevel::MEDIUM);
     configure(config);
 }
 
 CameraCapture::~CameraCapture()
-{}
+{
+    mLogger->printStartFunction(__FUNCTION__, logger::LogLevel::MEDIUM);
+}
 
 void CameraCapture::configure(const QJsonObject& config)
 {
@@ -40,23 +44,16 @@ void CameraCapture::configure(const QJsonObject& config)
     {
         mLogger->printError(QString("Blank frame grabbed"), __FUNCTION__);
     }
+    mLogger->print(QString("mFrame:(%1 x %2)").arg(mFrame.rows).arg(mFrame.cols), __FUNCTION__);
 }
-
-void CameraCapture::startCamera()
-{}
-
-void CameraCapture::stopCamera()
-{}
-
-void CameraCapture::displayCameraError()
-{}
 
 void CameraCapture::onUpdate()
 {
-    mLogger->printStartFunction(__FUNCTION__, logger::LogLevel::LOW);
+    mLogger->printStartFunction(__FUNCTION__, logger::LogLevel::MEDIUM);
     mCap.read(mFrame);
     if (mFrame.empty()) {
         std::cerr << "ERROR! blank frame grabbed\n";
     }
-    emit updateFrame(mFrame);
+
+    emit updateFrame({mFrame, QDateTime::currentMSecsSinceEpoch() });
 }

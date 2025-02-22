@@ -1,11 +1,32 @@
 {
-  "General": {
-    "LogLevel" : 0
-  },
-  "Service": {
-    "CameraFPS" : 25
-  },
-  "CameraCapture" : {
-    "deviceID": 1
-  }
+    "General": {
+        "LogLevel": 0
+    },
+    "Service": {
+        "CameraFPS": 10
+    },
+    "CameraCapture": {
+        "deviceID": 0
+    },
+    "CameraThread": {
+        "ResizeWidth": 300,
+        "ResizeHeight": 300
+    },
+    "FrameProcessing": {
+        "ResizeWidth": 300,
+        "ResizeHeight": 300
+    },
+    "FrameMedian": {
+        "ResizeWidth": 300,
+        "ResizeHeight": 300,
+        "MedianSize": 40
+    },
+    "FrameReader": {
+        "DatasetWin32": {
+            "PathToDataset": "D:\\repo\\OptimizationDataset\\test2\\",
+            "ConfigName": "config.json"
+        }
+    }
+    
+
 }

@@ -1,18 +1,11 @@
 #pragma once
 
-#include <QObject>
+#include "global.h"
+#include "frame_source.h"
 
-#include <opencv2/opencv.hpp>
-
-namespace logger
-{
-    class Logger;
-}
-
-class CameraCapture : public QObject
+class CameraCapture : public FrameSource
 {
     Q_OBJECT
-
 public:
     CameraCapture(const QJsonObject& config);
     ~CameraCapture();
@@ -21,15 +14,10 @@ private:
 
 public slots:
     void onUpdate();
-private slots:
-    void startCamera();
-    void stopCamera();
-    void displayCameraError();
 signals:
-    void updateFrame(cv::Mat frame);
+    void updateFrame(ProcessingStruct processing);
 private:
     int mDeviceID{ 0 };
-    std::unique_ptr<logger::Logger> mLogger;
     cv::Mat mFrame;
     cv::VideoCapture mCap;
 

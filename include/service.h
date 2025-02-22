@@ -1,7 +1,7 @@
 #pragma once
 
-#include "camera_capture.h"
-#include "camera_thread.h"
+#include "global.h"
+
 
 #include <QObject>
 
@@ -9,6 +9,11 @@ namespace logger
 {
     class Logger;
 }
+
+class FrameSource;
+class CameraThread;
+class FrameProcessing;
+class FrameMedian;
 
 class Service : public QObject
 {
@@ -21,13 +26,20 @@ public:
     void configure(const QJsonObject& config);
 private slots:
     void onUpdate();
+public slots:
+    void onShowImagesOpenCV(cv::Mat frame, std::string name);
 private:
     void createStartupThreads(const QJsonObject& config);
 private:
-    CameraCapture* capture{ nullptr };
+    FrameSource* capture{ nullptr };
     QThread* captureThread{ nullptr };
     CameraThread* camera{ nullptr };
     QThread* cameraThread{ nullptr };
+    FrameProcessing* frameProcessing{ nullptr };
+    QThread* frameProcessingThread{ nullptr };
+    FrameMedian* frameMedian{ nullptr };
+    QThread* frameMedianThread{ nullptr };
+    
 
     QTimer* mTimer{ nullptr };
     QTimer* mTimerCamera{ nullptr };
