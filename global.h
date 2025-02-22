@@ -12,7 +12,6 @@ constexpr auto CAMERA_THREAD_CONFIG{ "CameraThread" };
 constexpr auto RESIZE_WIDTH{ "ResizeWidth" };
 constexpr auto RESIZE_HEIGHT{ "ResizeHeight" };
 constexpr auto MEDIAN_SIZE{ "MedianSize" };
-
 constexpr auto FRAME_PROCESSING_CONFIG{ "FrameProcessing" };
 constexpr auto FRAME_MEDIAN_CONFIG{ "FrameMedian" };
 constexpr auto FRAME_READER_CONFIG{ "FrameReader" };
@@ -22,7 +21,6 @@ constexpr auto CONFIG_NAME{ "ConfigName" };
 constexpr auto INPUT_TYPE{ "InputType" };
 constexpr auto ALL_FRAMES{ "AllFrames" };
 constexpr auto DIR_CLEAN{ "DirectoryClean" };
-
 
 struct ProcessingStruct
 {
