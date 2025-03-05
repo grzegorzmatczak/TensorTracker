@@ -2,6 +2,7 @@
 
 #include <opencv2/opencv.hpp>
 #include "qglobal.h"
+#include "graph_global.h"
 
 constexpr auto SERVICE{ "Service" };
 constexpr auto CAMERA_FPS{ "CameraFPS" };
@@ -21,9 +22,3 @@ constexpr auto CONFIG_NAME{ "ConfigName" };
 constexpr auto INPUT_TYPE{ "InputType" };
 constexpr auto ALL_FRAMES{ "AllFrames" };
 constexpr auto DIR_CLEAN{ "DirectoryClean" };
-
-struct ProcessingStruct
-{
-    cv::Mat frame;
-    qint64 timestamp;
-};

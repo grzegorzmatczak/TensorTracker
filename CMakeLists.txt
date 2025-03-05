@@ -3,9 +3,11 @@ project(TensorTracker VERSION 0.0.1 DESCRIPTION "TensorTracker" LANGUAGES C CXX)
 
 set(TARGET_NAME "TensorTracker")
 
+MESSAGE(STATUS "CMAKE_VERSION: ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}")
+MESSAGE(STATUS "CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS_COMMON}")
 
 set(CMAKE_AUTOMOC ON)
@@ -26,6 +28,8 @@ if (WIN32)
     set(QMAKE_EXE  "D:\\Qt5\\5.15.2\\msvc2019_64\\bin\\qmake.exe")
 endif (WIN32)
 
+include_directories( "src" )
+include_directories( "include" )
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
@@ -36,6 +40,7 @@ MESSAGE(STATUS "Include dirs ${OpenCV_INCLUDE_DIRS}")
 MESSAGE(STATUS "LINK LIBRARIES ${OpenCV_LIBS}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 
+MESSAGE(STATUS "CMAKE_CONFIGURATION_TYPES: ${CMAKE_CONFIGURATION_TYPES}")
 add_subdirectory(googletest)
 if("${CMAKE_CONFIGURATION_TYPES}" STREQUAL "Release")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -48,6 +53,11 @@ add_subdirectory(image_algorithms)
 include_directories( "image_algorithms/src" )
 include_directories( "image_algorithms/include" )
 
+add_subdirectory(graph2)
+include_directories( "graph2/include" )
+
+add_subdirectory(ProcessingModules)
+include_directories( "graph2/include" )
 
 set(SRC_MAIN
 main.cpp
@@ -72,7 +82,6 @@ include/frame_source.h
 include/frame_reader.h
 )
 
-
 add_executable(${PROJECT_NAME} ${SRC_MAIN} ${HEADERS_MAIN})
 target_include_directories(${PROJECT_NAME}  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE  
@@ -80,6 +89,8 @@ Qt::Core Qt::Widgets Qt::Multimedia Qt::Network
 Threads::Threads 
 utils2_lib
 image_algorithms_lib
+graph2_lib
+processing_module_lib
 ${OpenCV_LIBS})
 
 if (WIN32)
