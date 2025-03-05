@@ -10,6 +10,3 @@
 [submodule "graph2"]
 	path = graph2
 	url = https://github.com/grzegorzmatczak/graph2.git
-[submodule "ProcessingModules"]
-	path = ProcessingModules
-	url = https://github.com/grzegorzmatczak/ProcessingModules
