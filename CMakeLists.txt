@@ -9,7 +9,9 @@ MESSAGE(STATUS "CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS_COMMON}")
-
+if (WIN32)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP5 " )
+endif (WIN32)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -19,7 +21,7 @@ macro(copy_json jsonname jsonpath)
 endmacro()
 
 copy_json("config.json" "")
-copy_json("gtest/test.json" "utils2/")
+#copy_json("gtest/test.json" "utils2/")
 
 if (WIN32)
     set(QT5_PATH  "D:\\Qt5\\5.15.2\\msvc2019_64")
@@ -52,6 +54,9 @@ include_directories( "utils2/include" )
 add_subdirectory(image_algorithms)
 include_directories( "image_algorithms/src" )
 include_directories( "image_algorithms/include" )
+
+add_subdirectory(processing2)
+include_directories( "processing2/include" )
 
 add_subdirectory(graph2)
 include_directories( "graph2/include" )
@@ -90,7 +95,7 @@ target_link_libraries(
     utils2_lib
     image_algorithms_lib
     graph2_lib
-    processing_module_lib
+    processing2_lib
     ${OpenCV_LIBS}
 )
 
