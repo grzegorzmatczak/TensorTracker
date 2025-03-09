@@ -56,9 +56,6 @@ include_directories( "image_algorithms/include" )
 add_subdirectory(graph2)
 include_directories( "graph2/include" )
 
-add_subdirectory(ProcessingModules)
-include_directories( "graph2/include" )
-
 set(SRC_MAIN
 main.cpp
 src/service.cpp
@@ -82,16 +79,20 @@ include/frame_source.h
 include/frame_reader.h
 )
 
-add_executable(${PROJECT_NAME} ${SRC_MAIN} ${HEADERS_MAIN})
-target_include_directories(${PROJECT_NAME}  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(${PROJECT_NAME} PRIVATE  
-Qt::Core Qt::Widgets Qt::Multimedia Qt::Network 
-Threads::Threads 
-utils2_lib
-image_algorithms_lib
-graph2_lib
-processing_module_lib
-${OpenCV_LIBS})
+add_executable(${PROJECT_NAME} 
+    ${SRC_MAIN} ${HEADERS_MAIN})
+    target_include_directories(${PROJECT_NAME}  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+target_link_libraries(
+    ${PROJECT_NAME} PRIVATE  
+    Qt::Core Qt::Widgets Qt::Multimedia Qt::Network 
+    Threads::Threads 
+    utils2_lib
+    image_algorithms_lib
+    graph2_lib
+    processing_module_lib
+    ${OpenCV_LIBS}
+)
 
 if (WIN32)
     get_target_property(QMAKE_EXE Qt5::qmake IMPORTED_LOCATION)
