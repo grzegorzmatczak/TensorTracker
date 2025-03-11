@@ -1,17 +1,18 @@
-Object Tracker
-Description
+# Object Tracker  
 
-Object Tracker is a C++ application designed for tracking objects in a given environment using computer vision techniques. The application processes video input, detects objects, and follows their movement over time, providing useful tracking data.
-Features
+## 📌 Overview  
+Object Tracker is a C++ application designed to track objects in real-time using computer vision techniques. The application leverages OpenCV for image processing and provides efficient tracking of moving objects in video streams.  
 
-    Real-time object detection and tracking
-    Support for multiple tracking algorithms (e.g., Kalman Filter, Mean-Shift, Optical Flow)
-    Configurable parameters for enhanced tracking accuracy
-    Video input from a webcam or pre-recorded files
-    Logging and visualization of object movement
+## 🚀 Features  
+- Real-time object tracking  
+- Support for multiple tracking algorithms (e.g., KCF, CSRT, MOSSE)  
+- Customizable tracking parameters  
+- OpenCV-based implementation  
+- Video input from webcam or file  
 
-Requirements
+## 🛠️ Installation  
 
-    C++17 or newer
-    OpenCV (for image processing and object tracking)
-    CMake (for building the project)
+### Prerequisites  
+- C++ compiler (GCC, Clang, or MSVC)  
+- CMake  
+- OpenCV  
