@@ -1,5 +1,11 @@
 #pragma once
 
+#if defined(UTILS2_SHARED)
+#  define UTILS2_SHARED Q_DECL_EXPORT
+#else
+#  define UTILS2_SHARED Q_DECL_IMPORT
+#endif
+
 #include <opencv2/opencv.hpp>
 #include "qglobal.h"
 #include "graph_global.h"

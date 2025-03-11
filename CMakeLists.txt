@@ -6,29 +6,17 @@ set(TARGET_NAME "TensorTracker")
 MESSAGE(STATUS "CMAKE_VERSION: ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}")
 MESSAGE(STATUS "CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS_COMMON}")
-if (WIN32)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP5 " )
-endif (WIN32)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 macro(copy_json jsonname jsonpath)
-    configure_file(${jsonpath}${jsonname} ${CMAKE_CONFIGURATION_TYPES}/${jsonname})
+    configure_file(${jsonpath}${jsonname} ${CMAKE_BUILD_TYPE}/${jsonname})
 endmacro()
 
 copy_json("config.json" "")
-#copy_json("gtest/test.json" "utils2/")
+copy_json("gtest/test.json" "utils2/")
 
-if (WIN32)
-    set(QT5_PATH  "D:\\Qt5\\5.15.2\\msvc2019_64")
-    list(APPEND CMAKE_PREFIX_PATH ${QT5_PATH})
-    set(OpenCV_DIR "D:\\repo\\opencv-4.10.0-build")
-    set(QMAKE_EXE  "D:\\Qt5\\5.15.2\\msvc2019_64\\bin\\qmake.exe")
-endif (WIN32)
 
 include_directories( "src" )
 include_directories( "include" )
@@ -42,14 +30,24 @@ MESSAGE(STATUS "Include dirs ${OpenCV_INCLUDE_DIRS}")
 MESSAGE(STATUS "LINK LIBRARIES ${OpenCV_LIBS}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-MESSAGE(STATUS "CMAKE_CONFIGURATION_TYPES: ${CMAKE_CONFIGURATION_TYPES}")
+MESSAGE(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 add_subdirectory(googletest)
-if("${CMAKE_CONFIGURATION_TYPES}" STREQUAL "Release")
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+#add_subdirectory(utils2)
+#include_directories( "utils2/include" )
+MESSAGE(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+   MESSAGE(STATUS "CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR}")
+    MESSAGE(STATUS "CMAKE_SOURCE_DIR ${CMAKE_SOURCE_DIR}")
 
+#set(utils2_DIR "${CUSTOM_INSTALL_PREFIX}")
+#MESSAGE(STATUS "utils2_DIR ${utils2_DIR}")
+#MESSAGE(STATUS "utils2_SOURCE_DIR/include  ${utils2_SOURCE_DIR}/include")
 add_subdirectory(utils2)
-include_directories( "utils2/include" )
+#find_package(utils2 )
+#include_directories("${utils2_SOURCE_DIR}/include")
 
 add_subdirectory(image_algorithms)
 include_directories( "image_algorithms/src" )
@@ -92,11 +90,19 @@ target_link_libraries(
     ${PROJECT_NAME} PRIVATE  
     Qt::Core Qt::Widgets Qt::Multimedia Qt::Network 
     Threads::Threads 
-    utils2_lib
-    image_algorithms_lib
-    graph2_lib
-    processing2_lib
+    utils2
+    image_algorithms
+    graph2
+    processing2
     ${OpenCV_LIBS}
+)
+
+target_include_directories(${PROJECT_NAME} PRIVATE 
+    "${utils2_SOURCE_DIR}/include"
+)
+
+target_link_directories(${PROJECT_NAME} PRIVATE 
+    "${utils2_SOURCE_DIR}/include"
 )
 
 if (WIN32)
@@ -109,38 +115,38 @@ endif(WIN32)
 
 if (WIN32)
     set(PREFIX_BUILD_TYPE "")
-    if("${CMAKE_CONFIGURATION_TYPES}" STREQUAL "Debug")
+    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 		set(PREFIX_BUILD_TYPE "d")
     endif()
     set(OPENCV_VERSION_WINDOWS "4100")
 
-    MESSAGE(STATUS "CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR}")
-    MESSAGE(STATUS "CMAKE_SOURCE_DIR ${CMAKE_SOURCE_DIR}")
+ 
 
     set(QT5_CORE ${QT5_PATH}/bin/Qt5Core${PREFIX_BUILD_TYPE}.dll)
-    MESSAGE(STATUS "QT5_CORE ${QT5_CORE}")
+    MESSAGE(STATUS "utils2_DIR ${utils2_DIR}")
     add_custom_command ( TARGET ${PROJECT_NAME}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_PATH}/bin/Qt5Test${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_PATH}/bin/Qt5Gui${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_PATH}/bin/Qt5Multimedia${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_PATH}/bin/Qt5Network${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_CORE} ${CMAKE_CONFIGURATION_TYPES}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${utils2_DIR}utils2.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_PATH}/bin/Qt5Test${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_PATH}/bin/Qt5Gui${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_PATH}/bin/Qt5Multimedia${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_PATH}/bin/Qt5Network${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT5_CORE} ${CMAKE_BUILD_TYPE}
 
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_stitching${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_bgsegm${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_tracking${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_videoio${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_video${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_imgcodecs${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_imgproc${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_core${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_calib3d${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_features2d${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_flann${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_dnn${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_highgui${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_stitching${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_gapi${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_CONFIGURATION_TYPES}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_CONFIGURATION_TYPES}/opencv_videoio_ffmpeg${OPENCV_VERSION_WINDOWS}_64.dll   ${CMAKE_CONFIGURATION_TYPES}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_stitching${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_bgsegm${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_tracking${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_videoio${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_video${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_imgcodecs${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_imgproc${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_core${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_calib3d${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_features2d${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_flann${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_dnn${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_highgui${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_stitching${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_gapi${OPENCV_VERSION_WINDOWS}${PREFIX_BUILD_TYPE}.dll   ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${OpenCV_DIR}/bin/${CMAKE_BUILD_TYPE}/opencv_videoio_ffmpeg${OPENCV_VERSION_WINDOWS}_64.dll   ${CMAKE_BUILD_TYPE}
     )
 endif(WIN32)
