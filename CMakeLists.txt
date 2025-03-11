@@ -6,6 +6,8 @@ set(TARGET_NAME "TensorTracker")
 MESSAGE(STATUS "CMAKE_VERSION: ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}")
 MESSAGE(STATUS "CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  ${COMPILE_OPTIONS}" )
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -17,7 +19,6 @@ endmacro()
 copy_json("config.json" "")
 copy_json("gtest/test.json" "utils2/")
 
-
 include_directories( "src" )
 include_directories( "include" )
 
@@ -26,8 +27,6 @@ find_package(Threads REQUIRED)
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets Multimedia Network)
 find_package(OpenCV REQUIRED)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-MESSAGE(STATUS "Include dirs ${OpenCV_INCLUDE_DIRS}")
-MESSAGE(STATUS "LINK LIBRARIES ${OpenCV_LIBS}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 MESSAGE(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
@@ -36,18 +35,12 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-#add_subdirectory(utils2)
-#include_directories( "utils2/include" )
-MESSAGE(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
-   MESSAGE(STATUS "CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR}")
-    MESSAGE(STATUS "CMAKE_SOURCE_DIR ${CMAKE_SOURCE_DIR}")
 
-#set(utils2_DIR "${CUSTOM_INSTALL_PREFIX}")
-#MESSAGE(STATUS "utils2_DIR ${utils2_DIR}")
-#MESSAGE(STATUS "utils2_SOURCE_DIR/include  ${utils2_SOURCE_DIR}/include")
+MESSAGE(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+MESSAGE(STATUS "CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR}")
+MESSAGE(STATUS "CMAKE_SOURCE_DIR ${CMAKE_SOURCE_DIR}")
+
 add_subdirectory(utils2)
-#find_package(utils2 )
-#include_directories("${utils2_SOURCE_DIR}/include")
 
 add_subdirectory(image_algorithms)
 include_directories( "image_algorithms/src" )
