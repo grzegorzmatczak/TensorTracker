@@ -1,7 +1,7 @@
 #include <QCoreApplication>
 #include <QString>
 
-#include "global.h"
+#include "tracker_global.h"
 #include "mainlogger.hpp"
 #include "logger.hpp"
 #include "configreader.hpp"

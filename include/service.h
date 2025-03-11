@@ -1,7 +1,6 @@
 #pragma once
 
-#include "global.h"
-
+#include "tracker_global.h"
 
 #include <QObject>
 

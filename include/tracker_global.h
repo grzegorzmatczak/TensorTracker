@@ -6,6 +6,12 @@
 #  define UTILS2_SHARED Q_DECL_IMPORT
 #endif
 
+#if defined(PROCESSING2_SHARED)
+#  define PROCESSING2_SHARED Q_DECL_EXPORT
+#else
+#  define PROCESSING2_SHARED Q_DECL_IMPORT
+#endif
+
 #include <opencv2/opencv.hpp>
 #include "qglobal.h"
 #include "graph_global.h"
@@ -28,3 +34,9 @@ constexpr auto CONFIG_NAME{ "ConfigName" };
 constexpr auto INPUT_TYPE{ "InputType" };
 constexpr auto ALL_FRAMES{ "AllFrames" };
 constexpr auto DIR_CLEAN{ "DirectoryClean" };
+
+struct ProcessingStruct
+{
+    cv::Mat frame;
+    qint64 timestamp;
+};

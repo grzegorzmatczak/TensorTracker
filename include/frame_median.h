@@ -2,7 +2,7 @@
 
 #include <QObject>
 
-#include "global.h"
+#include "tracker_global.h"
 
 class MedianFilter;
 

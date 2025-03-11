@@ -1,6 +1,5 @@
 #include "frame_median.h"
 
-#include "global.h"
 #include "logger.hpp"
 #include "medianfilter.hpp"
 

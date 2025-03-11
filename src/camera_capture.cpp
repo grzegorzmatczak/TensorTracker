@@ -1,9 +1,7 @@
 #include "camera_capture.h"
 
-#include "global.h"
 #include "logger.hpp"
 
-#include <QMessageBox>
 #include <QJsonObject>
 
 #include <opencv2/opencv.hpp>

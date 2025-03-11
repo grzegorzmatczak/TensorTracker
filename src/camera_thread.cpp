@@ -1,6 +1,5 @@
 #include "camera_thread.h"
 
-#include "global.h"
 #include "logger.hpp"
 
 #include <QJsonObject>

@@ -1,9 +1,7 @@
 #include "frame_source.h"
 
-#include "global.h"
 #include "logger.hpp"
 
-#include <QMessageBox>
 #include <QJsonObject>
 
 #include <opencv2/opencv.hpp>

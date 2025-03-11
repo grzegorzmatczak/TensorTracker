@@ -1,10 +1,8 @@
 #include "frame_reader.h"
 
-#include "global.h"
 #include "logger.hpp"
 #include "configreader.hpp"
 
-#include <QMessageBox>
 #include <QJsonObject>
 #include <QDir>
 

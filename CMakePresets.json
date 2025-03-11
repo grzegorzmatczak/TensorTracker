@@ -2,27 +2,55 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "windows-base",
-      "hidden": false,
-      "generator": "Visual Studio 17 2022",
-      "binaryDir": "${sourceDir}/out/build/${presetName}",
-      "installDir": "${sourceDir}/out/install/${presetName}",
-      "architecture": {
-        "value": "x64",
-        "strategy": "external"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      },
+        "name": "windows-base-debug-x64",
+        "hidden": false,
+        "generator": "Visual Studio 17 2022",
+        "binaryDir": "${sourceDir}/out/build/${presetName}",
+        "installDir": "${sourceDir}/out/install/${presetName}",
+        "architecture": {
+            "value": "x64",
+            "strategy": "external"
+        },
+        "condition": {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+        },
         "cacheVariables": {
             "COMPILE_OPTIONS": "/MP5 /FS",
-            "QT5_PATH": "D:\\Qt5\\5.15.2\\msvc2019_64",
-            "OpenCV_DIR": "D:\\repo\\opencv-4.10.0-build",
+            "Qt5_DIR": "D:/Qt5/5.15.2/msvc2019_64",
+            "QT5_PATH": "D:/Qt5/5.15.2/msvc2019_64",
+            "OpenCV_DIR": "D:/repo/opencv-4.10.0-build",
+            "OPENCV_VERSION_WINDOWS": "4100",
             "CMAKE_BUILD_TYPE": "Debug",
             "CUSTOM_INSTALL_PREFIX": "D:/repo/TensorTracker/install/windows-base",
             "utils2_DIR": "${sourceDir}/out/build/${presetName}/utils2/Debug/"
+        }
+    },
+    {
+        "name": "windows-base-release-x64",
+        "hidden": false,
+        "generator": "Visual Studio 17 2022",
+        "binaryDir": "${sourceDir}/out/build/${presetName}",
+        "installDir": "${sourceDir}/out/install/${presetName}",
+        "architecture": {
+            "value": "x64",
+            "strategy": "external"
+        },
+        "condition": {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+        },
+        "cacheVariables": {
+            "COMPILE_OPTIONS": "/MP5 /FS",
+            "Qt5_DIR": "D:/Qt5/5.15.2/msvc2019_64",
+            "QT5_PATH": "D:/Qt5/5.15.2/msvc2019_64",
+            "OpenCV_DIR": "D:/repo/opencv-4.10.0-build",
+            "OPENCV_VERSION_WINDOWS": "4100",
+            "CMAKE_BUILD_TYPE": "Release",
+            "CUSTOM_INSTALL_PREFIX": "D:/repo/TensorTracker/install/windows-base",
+            "utils2_DIR": "${sourceDir}/out/build/${presetName}/utils2/Release/"
         }
     }
   ]

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "global.h"
+#include "tracker_global.h"
 #include "frame_source.h"
 
 class FrameReader : public FrameSource

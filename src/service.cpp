@@ -1,6 +1,5 @@
 #include "service.h"
 
-#include "global.h"
 #include "logger.hpp"
 
 #include <stdio.h>
