@@ -6,8 +6,8 @@ set(TARGET_NAME "TensorTracker")
 MESSAGE(STATUS "CMAKE_VERSION: ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}")
 MESSAGE(STATUS "CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS_COMMON}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILE_OPTIONS}")
-list(APPEND CMAKE_PREFIX_PATH ${Qt5_DIR})
 
 if (MSVC)
     set(CMAKE_CXX_FLAGS_DEBUG "/MTd /")
@@ -18,38 +18,38 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
+list(APPEND CMAKE_PREFIX_PATH ${OpenCV_DIR})
+find_package(OpenCV REQUIRED)
+
+list(APPEND CMAKE_PREFIX_PATH ${Qt5_DIR})
+find_package(Qt5 REQUIRED COMPONENTS Core)
+
+list(APPEND CMAKE_PREFIX_PATH ${gtest_DIR_CUSTOM})
+find_package(GTest REQUIRED)
+
+list(APPEND CMAKE_PREFIX_PATH ${utils2_DIR_CUSTOM})
+find_package(utils2 REQUIRED)
+
+list(APPEND CMAKE_PREFIX_PATH ${processing2_DIR_CUSTOM})
+find_package(processing2 REQUIRED)
+
+list(APPEND CMAKE_PREFIX_PATH ${graph2_DIR_CUSTOM})
+find_package(graph2 REQUIRED)
+
+list(APPEND CMAKE_PREFIX_PATH ${image_algorithms_DIR_CUSTOM})
+find_package(image_algorithms REQUIRED)
+
 macro(copy_json jsonname jsonpath)
     configure_file(${jsonpath}${jsonname} ${CMAKE_BUILD_TYPE}/${jsonname})
 endmacro()
 
 copy_json("config.json" "")
-copy_json("gtest/test.json" "utils2/")
 
 include_directories( "src" )
 include_directories( "include" )
-
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
-find_package(Qt5 REQUIRED COMPONENTS Core)
-find_package(OpenCV REQUIRED)
-
-MESSAGE(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
-add_subdirectory(googletest)
-if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-endif()
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
-add_subdirectory(utils2)
-
-add_subdirectory(image_algorithms)
-include_directories("image_algorithms/include")
-
-add_subdirectory(processing2)
-include_directories("processing2/include")
-
-add_subdirectory(graph2)
-include_directories("graph2/include")
 
 set(SRC_MAIN
     main.cpp
@@ -72,9 +72,15 @@ set(HEADERS_MAIN
     include/frame_reader.h
 )
 add_executable(${PROJECT_NAME} 
-    ${SRC_MAIN} ${HEADERS_MAIN})
-    target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${SRC_MAIN} ${HEADERS_MAIN}
 )
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${utils2_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${processing2_DIR_CUSTOM}/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${graph2_DIR_CUSTOM}/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${image_algorithms_DIR_CUSTOM}/include)
+
 target_link_libraries(
     ${PROJECT_NAME} PRIVATE  
     Qt::Core
@@ -84,14 +90,6 @@ target_link_libraries(
     graph2
     processing2
     ${OpenCV_LIBS}
-)
-
-target_include_directories(${PROJECT_NAME} PRIVATE 
-    "${utils2_SOURCE_DIR}/include"
-)
-
-target_link_directories(${PROJECT_NAME} PRIVATE 
-    "${utils2_SOURCE_DIR}/include"
 )
 
 if (WIN32)
@@ -109,9 +107,10 @@ if (WIN32)
     endif()
     message(STATUS "OPENCV_VERSION_WINDOWS:" ${OPENCV_VERSION_WINDOWS})
     message(STATUS "PREFIX_BUILD_TYPE:" ${PREFIX_BUILD_TYPE})
-    MESSAGE(STATUS "utils2_DIR ${utils2_DIR}")
+    
+    set(CUSTOM_BIN_DIR "${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}")
     add_custom_command ( TARGET ${PROJECT_NAME}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${utils2_DIR}utils2.dll                              ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${utils2_DIR_CUSTOM}lib/utils2.dll                   ${CUSTOM_BIN_DIR}  
 
         COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT_BIN_DIR}/Qt5Test${PREFIX_BUILD_TYPE}.dll        ${CMAKE_BUILD_TYPE}
         COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${QT_BIN_DIR}/Qt5Gui${PREFIX_BUILD_TYPE}.dll         ${CMAKE_BUILD_TYPE}

@@ -23,8 +23,11 @@
             "OpenCV_DIR": "D:/repo/opencv-4.10.0-build",
             "OPENCV_VERSION_WINDOWS": "4100",
             "CMAKE_BUILD_TYPE": "Debug",
-            "CUSTOM_INSTALL_PREFIX": "D:/repo/TensorTracker/install/windows-base",
-            "utils2_DIR": "${sourceDir}/out/build/${presetName}/utils2/Debug/"
+            "utils2_DIR_CUSTOM": "D:/repo/utils2/out/install/${presetName}/",
+            "processing2_DIR_CUSTOM": "D:/repo/processing2/out/install/${presetName}",
+            "graph2_DIR_CUSTOM": "D:/repo/graph2/out/install/${presetName}",
+            "gtest_DIR_CUSTOM": "D:/repo/googletest-1.14.0/build",
+            "image_algorithms_DIR_CUSTOM": "D:/repo/image_algorithms/out/install/${presetName}"
         }
     },
     {
@@ -50,7 +53,7 @@
             "OPENCV_VERSION_WINDOWS": "4100",
             "CMAKE_BUILD_TYPE": "Release",
             "CUSTOM_INSTALL_PREFIX": "D:/repo/TensorTracker/install/windows-base",
-            "utils2_DIR": "${sourceDir}/out/build/${presetName}/utils2/Release/"
+            "utils2_DIR": "${sourceDir}/out/build/${presetName}/Release/"
         }
     }
   ]
